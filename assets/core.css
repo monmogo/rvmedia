@@ -1,0 +1,252 @@
+/* 🌟 RESET & CẤU HÌNH CHUNG */
+* {
+    margin    : 0;
+    padding   : 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f9fafb;
+    font-family     : 'Arial', sans-serif;
+    color           : #333;
+    overflow-x      : hidden;
+}
+
+/* 🌟 BỐ CỤC CHÍNH */
+.container-fluid {
+    max-width: 1600px;
+    margin   : auto;
+}
+
+.main-container {
+    display   : flex;
+    flex-wrap : wrap;
+    min-height: 100vh;
+}
+
+/* 🌟 BANNER CAROUSEL */
+#bannerCarousel {
+    max-width    : 100%;
+    border-radius: 10px;
+    overflow     : hidden;
+}
+
+.banner-img {
+    height       : 500px;
+    object-fit   : cover;
+    border-radius: 10px;
+}
+
+/* 🌟 CAPTION BANNER */
+.carousel-caption {
+    background   : rgba(0, 0, 0, 0.6);
+    padding      : 15px;
+    border-radius: 10px;
+    bottom       : 10%;
+    color        : white;
+}
+
+.carousel-caption h1 {
+    font-size  : 2.2rem;
+    font-weight: bold;
+}
+
+.carousel-caption p {
+    font-size: 1.1rem;
+}
+
+/* 🌟 NÚT ĐIỀU HƯỚNG CAROUSEL */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius   : 50%;
+    padding         : 8px;
+}
+
+/* 🌟 RESPONSIVE CHO BANNER */
+@media (max-width: 768px) {
+    .banner-img {
+        height: 320px;
+    }
+
+    .carousel-caption {
+        bottom : 8%;
+        padding: 10px;
+    }
+
+    .carousel-caption h1 {
+        font-size: 1.8rem;
+    }
+
+    .carousel-caption p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .banner-img {
+        height: 260px;
+    }
+
+    .carousel-caption {
+        padding: 8px;
+    }
+
+    .carousel-caption h1 {
+        font-size: 1.5rem;
+    }
+
+    .carousel-caption p {
+        font-size: 0.9rem;
+    }
+}
+
+/* 🌟 SIDEBAR (DANH MỤC) */
+.sidebar {
+    background   : #fff;
+    padding      : 20px;
+    border-radius: 6px;
+    box-shadow   : 0px 2px 8px rgba(0, 0, 0, 0.1);
+    max-width    : 280px;
+    flex         : 1;
+}
+
+/* 🌟 SIDEBAR CHO MOBILE */
+@media (max-width: 992px) {
+    .sidebar {
+        display   : none;
+        position  : fixed;
+        top       : 0;
+        left      : 0;
+        width     : 260px;
+        height    : 100%;
+        background: #fff;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        z-index   : 1000;
+        padding   : 20px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .sidebar-open {
+        display  : block;
+        transform: translateX(0);
+    }
+
+    .sidebar-toggle {
+        display      : block;
+        position     : fixed;
+        top          : 15px;
+        left         : 15px;
+        background   : #007bff;
+        color        : white;
+        padding      : 8px 12px;
+        border-radius: 5px;
+        cursor       : pointer;
+        z-index      : 1100;
+        font-size    : 14px;
+    }
+}
+
+/* 🌟 DANH MỤC */
+.list-group-item {
+    cursor       : pointer;
+    transition   : background 0.3s, color 0.3s;
+    font-size    : 0.95rem;
+    padding      : 10px;
+    border-radius: 5px;
+}
+
+.list-group-item:hover,
+.list-group-item.active {
+    background: #007bff;
+    color     : white;
+}
+
+/* 🌟 DANH SÁCH THEME */
+.theme-list {
+    background   : #fff;
+    padding      : 20px;
+    border-radius: 6px;
+    box-shadow   : 0px 2px 8px rgba(0, 0, 0, 0.1);
+    flex-grow    : 3;
+}
+
+/* 🌟 CHIA CỘT LAYOUT */
+@media (min-width: 992px) {
+    .main-container {
+        display  : flex;
+        flex-wrap: nowrap;
+    }
+
+    .sidebar {
+        flex     : 1;
+        max-width: 300px;
+    }
+
+    .theme-list {
+        flex: 3;
+    }
+}
+
+/* 🌟 THEME CARD */
+.theme-card {
+    transition      : transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border-radius   : 8px;
+    box-shadow      : 0px 2px 8px rgba(0, 0, 0, 0.08);
+    overflow        : hidden;
+    background-color: #fff;
+    height          : 100%;
+    padding         : 15px;
+}
+
+.theme-card img {
+    height       : 300px;
+    object-fit   : cover;
+    border-radius: 8px 8px 0 0;
+}
+
+.theme-card:hover {
+    transform : translateY(-5px);
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 🌟 NÚT BẤM (LÀM NHỎ HƠN) */
+.btn {
+    font-size    : 0.85rem;
+    padding      : 8px 12px;
+    min-width    : 90px;
+    transition   : all 0.2s ease-in-out;
+    border-radius: 6px;
+}
+
+.btn-primary:hover,
+.btn-success:hover {
+    transform : translateY(-3px);
+    background: #0056b3;
+}
+
+/* 🌟 FOOTER */
+.footer {
+    background: #222;
+    color     : #ccc;
+    font-size : 0.9rem;
+    padding   : 20px 0;
+    text-align: center;
+}
+
+.footer a {
+    color     : #bbb;
+    transition: color 0.3s;
+}
+
+.footer a:hover {
+    color          : #007bff;
+    text-decoration: none;
+}
+
+/* 🌟 TỐI ƯU CHO MOBILE */
+@media (max-width: 992px) {
+    .search-box {
+        max-width: 100%;
+    }
+}

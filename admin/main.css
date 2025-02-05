@@ -1,0 +1,176 @@
+/* === NAVIGATION BAR === */
+.navbar {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* === CONTAINER CHUNG === */
+.container {
+    max-width: 1200px;
+}
+
+/* === FORM THÊM THEME === */
+form {
+    background   : #fff;
+    padding      : 20px;
+    border-radius: 8px;
+    box-shadow   : 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+form h4 {
+    font-weight  : bold;
+    margin-bottom: 15px;
+}
+
+input,
+textarea {
+    border-radius: 6px;
+    border       : 1px solid #ccc;
+    padding      : 10px;
+    transition   : all 0.3s ease-in-out;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #007bff;
+    box-shadow  : 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+/* === BUTTONS === */
+.btn-primary {
+    background: #007bff;
+    border    : none;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: #0056b3;
+}
+
+.btn-danger {
+    background: #dc3545;
+    border    : none;
+    transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+    background: #a71d2a;
+}
+
+.btn-warning {
+    background: #ffc107;
+    border    : none;
+    transition: all 0.3s ease;
+}
+
+.btn-warning:hover {
+    background: #d39e00;
+}
+
+/* === TABLE STYLING === */
+.table {
+    background   : #fff;
+    border-radius: 8px;
+    overflow     : hidden;
+    box-shadow   : 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.table th {
+    background: #007bff;
+    color     : white;
+    text-align: center;
+}
+
+.table td {
+    vertical-align: middle;
+    text-align    : center;
+}
+
+/* === IMAGE PREVIEW === */
+.table img {
+    width        : 50px;
+    height       : 50px;
+    object-fit   : cover;
+    border-radius: 6px;
+    transition   : transform 0.3s ease;
+}
+
+.table img:hover {
+    transform: scale(1.1);
+}
+
+/* 🌟 Tổng quan */
+body {
+    background-color: #f9fafb;
+    font-family     : 'Arial', sans-serif;
+}
+
+/* 🌟 Bố cục Admin */
+.admin-container {
+    display   : flex;
+    min-height: 100vh;
+}
+
+/* 🌟 Sidebar */
+.sidebar {
+    width      : 250px;
+    background : #343a40;
+    color      : white;
+    height     : 100vh;
+    position   : fixed;
+    left       : 0;
+    top        : 0;
+    padding-top: 20px;
+}
+
+.sidebar .nav-link {
+    color     : white;
+    padding   : 15px 20px;
+    font-size : 1rem;
+    transition: 0.3s;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background: #007bff;
+}
+
+/* 🌟 Nội dung chính */
+.content {
+    margin-left: 250px;
+    flex-grow  : 1;
+    padding    : 20px;
+}
+
+/* 🌟 Card Admin */
+.admin-card {
+    border-radius: 8px;
+    transition   : all 0.3s ease-in-out;
+}
+
+.admin-card:hover {
+    transform : translateY(-5px);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* 🌟 Chỉnh màu nút */
+.btn {
+    font-weight: bold;
+}
+
+/* 🌟 Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        width  : 100px;
+        padding: 10px;
+    }
+
+    .sidebar .nav-link {
+        text-align: center;
+        font-size : 0.9rem;
+        padding   : 10px;
+    }
+
+    .content {
+        margin-left: 100px;
+    }
+}

@@ -1,0 +1,76 @@
+/* 🌟 Tổng quan */
+body {
+    background-color: #f9fafb;
+    font-family     : 'Arial', sans-serif;
+}
+
+/* 🌟 Bố cục Admin */
+.admin-container {
+    display   : flex;
+    min-height: 100vh;
+}
+
+/* 🌟 Sidebar */
+.sidebar {
+    width      : 250px;
+    background : #343a40;
+    color      : white;
+    height     : 100vh;
+    position   : fixed;
+    left       : 0;
+    top        : 0;
+    padding-top: 20px;
+}
+
+.sidebar .nav-link {
+    color     : white;
+    padding   : 15px 20px;
+    font-size : 1rem;
+    transition: 0.3s;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background: #007bff;
+}
+
+/* 🌟 Nội dung chính */
+.content {
+    margin-left: 250px;
+    flex-grow  : 1;
+    padding    : 20px;
+}
+
+/* 🌟 Card Admin */
+.admin-card {
+    border-radius: 8px;
+    transition   : all 0.3s ease-in-out;
+}
+
+.admin-card:hover {
+    transform : translateY(-5px);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* 🌟 Chỉnh màu nút */
+.btn {
+    font-weight: bold;
+}
+
+/* 🌟 Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        width  : 100px;
+        padding: 10px;
+    }
+
+    .sidebar .nav-link {
+        text-align: center;
+        font-size : 0.9rem;
+        padding   : 10px;
+    }
+
+    .content {
+        margin-left: 100px;
+    }
+}
