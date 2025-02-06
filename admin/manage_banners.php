@@ -7,6 +7,39 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     die("🚫 Bạn không có quyền truy cập vào trang này!");
 }
 
+/**
+ * Hàm trả về URL ảnh hợp lệ cho banner.
+ *
+ * @param string $imageUrl URL hoặc đường dẫn lưu trong cơ sở dữ liệu.
+ * @return string URL ảnh hợp lệ hoặc ảnh mặc định nếu không hợp lệ.
+ */
+function getBannerImageUrl($imageUrl) {
+    $default = 'assets/default.png';
+    $imageUrl = trim($imageUrl);
+    
+    // Nếu ảnh rỗng, trả về ảnh mặc định
+    if (empty($imageUrl)) {
+        return $default;
+    }
+    
+    // Nếu là URL tuyệt đối (http hoặc https), trả về luôn
+    if (preg_match('/^https?:\/\//', $imageUrl)) {
+        return $imageUrl;
+    }
+    
+    // Nếu không bắt đầu bằng "uploads/", thêm tiền tố "uploads/"
+    if (strpos($imageUrl, "uploads/") !== 0) {
+        $imageUrl = "uploads/" . ltrim($imageUrl, '/');
+    }
+    
+    // Kiểm tra xem file ảnh có tồn tại trên máy chủ không
+    if (!file_exists($_SERVER['DOCUMENT_ROOT'] . '/' . $imageUrl)) {
+        return $default;
+    }
+    
+    return $imageUrl;
+}
+
 // Lấy danh sách banner
 $result = $conn->query("SELECT * FROM banners ORDER BY id DESC");
 ?>
@@ -18,10 +51,20 @@ $result = $conn->query("SELECT * FROM banners ORDER BY id DESC");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản Lý Banner</title>
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Google Font: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Inline CSS -->
     <style>
     /* 🌟 Sidebar */
+    body {
+        background-color: #f4f6f9;
+        font-family: 'Poppins', sans-serif;
+    }
+
     .sidebar {
         width: 250px;
         height: 100vh;
@@ -31,7 +74,7 @@ $result = $conn->query("SELECT * FROM banners ORDER BY id DESC");
         left: 0;
         color: white;
         padding-top: 20px;
-        box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     }
 
     .sidebar h3 {
@@ -51,7 +94,7 @@ $result = $conn->query("SELECT * FROM banners ORDER BY id DESC");
     .nav-link:hover,
     .nav-link.active {
         background: #007bff;
-        color: white;
+        color: #fff;
         border-radius: 5px;
     }
 
@@ -74,9 +117,8 @@ $result = $conn->query("SELECT * FROM banners ORDER BY id DESC");
 </head>
 
 <body>
-
     <div class="d-flex">
-        <!-- 🌟 Sidebar -->
+        <!-- 🌟 Sidebar (nhúng từ file mẫu) -->
         <?php include '../includes/sidebar.php'; ?>
 
         <!-- 🌟 Nội dung chính -->
@@ -101,29 +143,13 @@ $result = $conn->query("SELECT * FROM banners ORDER BY id DESC");
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = $result->fetch_assoc()): ?>
+                    <?php while ($row = $result->fetch_assoc()) : ?>
+                    <?php $imagePath = getBannerImageUrl($row['image_url']); ?>
                     <tr>
                         <td><?php echo $row['id']; ?></td>
                         <td><?php echo htmlspecialchars($row['title']); ?></td>
                         <td><?php echo htmlspecialchars($row['description']); ?></td>
                         <td>
-                            <?php
-                                $imagePath = trim($row['image_url']);
-
-                                // Nếu ảnh rỗng, hiển thị ảnh mặc định
-                                if (empty($imagePath)) {
-                                    $imagePath = 'assets/default.png';
-                                }
-                                // Nếu đường dẫn ảnh thiếu dấu "/", thêm vào
-                                elseif (strpos($imagePath, "uploads") === false) {
-                                    $imagePath = "uploads" . ltrim($imagePath, '');
-                                }
-
-                                // Kiểm tra xem ảnh có tồn tại không
-                                if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $imagePath)) {
-                                    $imagePath = 'assets/default.png';
-                                }
-                            ?>
                             <img src="<?php echo htmlspecialchars($imagePath); ?>" width="120"
                                 onerror="this.src='assets/default.png';">
                         </td>
@@ -132,9 +158,12 @@ $result = $conn->query("SELECT * FROM banners ORDER BY id DESC");
                                 data-title="<?php echo htmlspecialchars($row['title']); ?>"
                                 data-description="<?php echo htmlspecialchars($row['description']); ?>"
                                 data-link="<?php echo htmlspecialchars($row['link']); ?>"
-                                data-image="<?php echo htmlspecialchars($imagePath); ?>">✏️ Sửa</button>
-                            <button class="btn btn-danger btn-sm delete-btn" data-id="<?php echo $row['id']; ?>">🗑️
-                                Xóa</button>
+                                data-image="<?php echo htmlspecialchars($imagePath); ?>">
+                                ✏️ Sửa
+                            </button>
+                            <button class="btn btn-danger btn-sm delete-btn" data-id="<?php echo $row['id']; ?>">
+                                🗑️ Xóa
+                            </button>
                         </td>
                     </tr>
                     <?php endwhile; ?>
@@ -149,7 +178,7 @@ $result = $conn->query("SELECT * FROM banners ORDER BY id DESC");
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">➕ Thêm Banner</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
                 </div>
                 <div class="modal-body">
                     <form id="addBannerForm" enctype="multipart/form-data">
@@ -172,6 +201,43 @@ $result = $conn->query("SELECT * FROM banners ORDER BY id DESC");
         </div>
     </div>
 
+    <!-- Modal Sửa Banner -->
+    <div class="modal fade" id="editBannerModal" tabindex="-1" aria-labelledby="editBannerLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">✏️ Sửa Banner</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editBannerForm" enctype="multipart/form-data">
+                        <input type="hidden" name="id" id="editBannerId">
+                        <div class="mb-3">
+                            <label class="form-label">Tiêu đề</label>
+                            <input type="text" class="form-control" name="title" id="editBannerTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Mô tả</label>
+                            <textarea class="form-control" name="description" id="editBannerDescription"
+                                required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Link</label>
+                            <input type="text" class="form-control" name="link" id="editBannerLink">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Ảnh hiện tại</label>
+                            <div id="currentBannerImage" class="mb-2"></div>
+                            <label class="form-label">Chọn ảnh mới (nếu muốn thay đổi)</label>
+                            <input type="file" class="form-control" name="image_file" accept="image/*">
+                        </div>
+                        <button type="submit" class="btn btn-warning w-100">✏️ Cập nhật</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- AJAX Xử Lý -->
     <script>
     $(document).ready(function() {
@@ -179,7 +245,6 @@ $result = $conn->query("SELECT * FROM banners ORDER BY id DESC");
         $("#addBannerForm").submit(function(event) {
             event.preventDefault();
             var formData = new FormData(this);
-
             $.ajax({
                 type: "POST",
                 url: "../api/add_banner.php",
@@ -189,6 +254,47 @@ $result = $conn->query("SELECT * FROM banners ORDER BY id DESC");
                 success: function(response) {
                     alert(response);
                     location.reload();
+                },
+                error: function(xhr, status, error) {
+                    alert("Có lỗi xảy ra: " + error);
+                }
+            });
+        });
+
+        // Mở modal chỉnh sửa banner và điền dữ liệu
+        $(".edit-btn").click(function() {
+            var id = $(this).data("id");
+            var title = $(this).data("title");
+            var description = $(this).data("description");
+            var link = $(this).data("link");
+            var image = $(this).data("image");
+
+            $("#editBannerId").val(id);
+            $("#editBannerTitle").val(title);
+            $("#editBannerDescription").val(description);
+            $("#editBannerLink").val(link);
+            $("#currentBannerImage").html('<img src="' + image +
+                '" alt="Current Banner" width="100" class="img-thumbnail">');
+
+            $("#editBannerModal").modal("show");
+        });
+
+        // Sửa banner
+        $("#editBannerForm").submit(function(event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+                type: "POST",
+                url: "../api/edit_banner.php",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    alert(response);
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    alert("Có lỗi xảy ra: " + error);
                 }
             });
         });
@@ -202,6 +308,8 @@ $result = $conn->query("SELECT * FROM banners ORDER BY id DESC");
                 }, function(response) {
                     alert(response);
                     location.reload();
+                }).fail(function(xhr, status, error) {
+                    alert("Có lỗi xảy ra: " + error);
                 });
             }
         });
@@ -210,7 +318,6 @@ $result = $conn->query("SELECT * FROM banners ORDER BY id DESC");
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 
 </html>

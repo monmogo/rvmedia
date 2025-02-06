@@ -103,11 +103,71 @@ $banners = getResults($conn, "SELECT * FROM banners ORDER BY id DESC");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RVMedia68 | Chuyên gia thiết kế web app</title>
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Google Font: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="assets/core.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- CSS Inline dành cho Bóng bấm Telegram -->
+    <!-- Inline CSS cho giao diện -->
     <style>
+    body {
+        background: linear-gradient(135deg, #f9f9f9, #e3f2fd);
+        font-family: 'Poppins', sans-serif;
+        color: #333;
+    }
+
+    /* Banner Carousel */
+    .carousel-item img {
+        object-fit: cover;
+        height: 500px;
+        width: 100%;
+    }
+
+    .carousel-caption {
+        background: rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .carousel-caption h1 {
+        font-size: 2.5rem;
+        font-weight: 600;
+    }
+
+    .carousel-caption p {
+        font-size: 1.2rem;
+    }
+
+    /* Sidebar (Danh mục) */
+    aside {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    /* Theme Cards */
+    .theme-card .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .theme-card .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .theme-card .card-img-top {
+        border-radius: 15px 15px 0 0;
+        height: 250px;
+        object-fit: cover;
+    }
+
+    /* Telegram Float */
     .telegram-float {
         position: fixed;
         bottom: 20px;
@@ -149,13 +209,13 @@ $banners = getResults($conn, "SELECT * FROM banners ORDER BY id DESC");
         <?php endif; ?>
 
         <!-- Banner Carousel -->
-        <div id="bannerCarousel" class="carousel slide shadow-sm rounded mb-4" data-bs-ride="carousel">
+        <div id="bannerCarousel" class="carousel slide shadow-sm rounded mb-5" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <?php 
                 $first = true;
                 foreach ($banners as $banner): ?>
                 <div class="carousel-item <?php echo $first ? 'active' : ''; ?>">
-                    <img src="<?php echo htmlspecialchars($banner['image_url']); ?>" class="d-block w-100 banner-img"
+                    <img src="<?php echo htmlspecialchars($banner['image_url']); ?>"
                         alt="<?php echo htmlspecialchars($banner['title']); ?>">
                     <div class="carousel-caption d-none d-md-block">
                         <h1 class="fw-bold"><?php echo htmlspecialchars($banner['title']); ?></h1>
@@ -182,15 +242,14 @@ $banners = getResults($conn, "SELECT * FROM banners ORDER BY id DESC");
     </div>
 
     <div class="container mt-5">
-        <h2 class="text-center fw-bold mb-4">- SOURCE CODE NGON MỚI UPDATE -</h2>
+        <h2 class="text-center fw-bold mb-4">- SOURCE CODE NGON NGÀY MỚI UPDATE -</h2>
         <div class="row">
-            <!-- Sidebar (Danh Mục) -->
+            <!-- Sidebar (Danh mục) -->
             <aside class="col-md-3">
-                <h5 class="fw-bold">📂 Danh Mục</h5>
+                <h5 class="fw-bold mb-3">📂 Danh Mục</h5>
                 <div class="list-group">
-                    <button class="list-group-item list-group-item-action category-btn active" data-category="all">
-                        Tất cả
-                    </button>
+                    <button class="list-group-item list-group-item-action category-btn active" data-category="all">Tất
+                        cả</button>
                     <?php foreach ($categories as $cat): ?>
                     <button class="list-group-item list-group-item-action category-btn"
                         data-category="<?php echo htmlspecialchars($cat['category']); ?>">
@@ -209,21 +268,20 @@ $banners = getResults($conn, "SELECT * FROM banners ORDER BY id DESC");
                         data-category="<?php echo htmlspecialchars($theme['category']); ?>">
                         <div class="card">
                             <?php
-                                        $imagePath = trim($theme['image_url']);
-                                        if (empty($imagePath)) {
-                                            $imagePath = 'assets/default.png';
-                                        } elseif (!preg_match('/^(http|\/rvmedia2\/uploads\/)/', $imagePath)) {
-                                            $imagePath = "/rvmedia2/uploads/" . $imagePath;
-                                        }
-                                    ?>
+                                $imagePath = trim($theme['image_url']);
+                                if (empty($imagePath)) {
+                                    $imagePath = 'assets/default.png';
+                                } elseif (!preg_match('/^(http|\/rvmedia2\/uploads\/)/', $imagePath)) {
+                                    $imagePath = "/rvmedia2/uploads/" . $imagePath;
+                                }
+                            ?>
                             <img src="<?php echo htmlspecialchars($imagePath); ?>" class="card-img-top"
                                 alt="Theme Image" loading="lazy" onerror="this.src='assets/default.png';">
                             <div class="card-body text-center">
                                 <h5 class="card-title fw-bold"><?php echo htmlspecialchars($theme['name']); ?></h5>
                                 <p class="card-text text-muted"><?php echo htmlspecialchars($theme['description']); ?>
                                 </p>
-                                <p class="fw-bold text-danger fs-4">
-                                    <?php echo number_format($theme['price'], 2); ?> VND
+                                <p class="fw-bold text-danger fs-4"><?php echo number_format($theme['price'], 2); ?> VND
                                 </p>
                                 <div class="d-flex justify-content-center mb-3">
                                     <span class="badge rounded-pill bg-secondary text-white px-3 py-2 me-3">
@@ -235,12 +293,9 @@ $banners = getResults($conn, "SELECT * FROM banners ORDER BY id DESC");
                                 </div>
                                 <div class="d-flex justify-content-center">
                                     <a href="product.php?id=<?php echo $theme['id']; ?>"
-                                        class="btn btn-lg btn-outline-primary me-3">
-                                        Xem demo
-                                    </a>
-                                    <a href="cart.php?id=<?php echo $theme['id']; ?>" class="btn btn-lg btn-success">
-                                        Thêm vào giỏ
-                                    </a>
+                                        class="btn btn-lg btn-outline-primary me-3">Xem demo</a>
+                                    <a href="cart.php?id=<?php echo $theme['id']; ?>"
+                                        class="btn btn-lg btn-success">Thêm vào giỏ</a>
                                 </div>
                             </div>
                         </div>

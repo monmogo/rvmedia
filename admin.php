@@ -13,13 +13,18 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Google Font: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Custom Admin CSS (nếu có) -->
     <link rel="stylesheet" type="text/css" href="assets/admin.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-    /* 🌟 Nâng cấp giao diện */
+    /* Tổng thể */
     body {
-        background-color: #f4f6f9;
+        background: linear-gradient(135deg, #f4f6f9, #e9ecef);
+        font-family: 'Poppins', sans-serif;
     }
 
     .admin-container {
@@ -27,15 +32,17 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
         min-height: 100vh;
     }
 
+    /* Nội dung chính */
     .content {
         flex: 1;
         background: #fff;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
         padding: 20px;
         margin: 20px;
     }
 
+    /* Admin Cards */
     .admin-card {
         border: none;
         border-radius: 10px;
@@ -65,7 +72,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
         margin-bottom: 10px;
     }
 
-    /* 🌟 Màu sắc cao cấp */
+    /* Màu sắc Gradient cao cấp */
     .bg-primary {
         background: linear-gradient(135deg, #007bff, #0056b3) !important;
     }
@@ -85,17 +92,24 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     .bg-info {
         background: linear-gradient(135deg, #17a2b8, #0c5460) !important;
     }
+
+    /* Biểu đồ & Card thống kê */
+    .card.shadow {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body h2 {
+        font-size: 2rem;
+    }
     </style>
 </head>
 
 <body>
-
-    <div class="admin-container d-flex">
-
-        <!-- 🌟 Sidebar -->
+    <div class="admin-container">
+        <!-- Sidebar -->
         <?php include 'template/sidebar.php'; ?>
 
-        <!-- 🌟 Nội dung chính -->
+        <!-- Nội dung chính -->
         <main class="content">
             <h2 class="fw-bold text-center">👑 Chào mừng, Admin <?php echo htmlspecialchars($_SESSION['username']); ?>!
             </h2>
@@ -153,9 +167,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                     </div>
                 </div>
             </div>
-            <h2 class="fw-bold text-center">📊 Phân tích bán hàng & Dòng tiền</h2>
 
-            <div class="row g-4">
+            <h2 class="fw-bold text-center mt-5">📊 Phân tích bán hàng & Dòng tiền</h2>
+
+            <div class="row g-4 mt-4">
                 <div class="col-md-4">
                     <div class="card bg-primary text-white text-center shadow">
                         <div class="card-body">
@@ -182,7 +197,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                 </div>
             </div>
 
-            <!-- 🌟 Biểu đồ Doanh Thu -->
+            <!-- Biểu đồ Dòng Tiền -->
             <div class="card shadow mt-4 p-3">
                 <h5 class="fw-bold text-center">📈 Biểu đồ Dòng Tiền (6 tháng gần nhất)</h5>
                 <canvas id="salesChart"></canvas>
@@ -190,31 +205,34 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
         </main>
     </div>
 
-</body>
-<script>
-var ctx = document.getElementById('salesChart').getContext('2d');
-var salesChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: <?= $monthsJSON ?>,
-        datasets: [{
-            label: 'Doanh Thu (VNĐ)',
-            data: <?= $salesJSON ?>,
-            borderColor: 'rgba(75, 192, 192, 1)',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderWidth: 2,
-            fill: true
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                display: true
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    var ctx = document.getElementById('salesChart').getContext('2d');
+    var salesChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: <?= $monthsJSON ?>,
+            datasets: [{
+                label: 'Doanh Thu (VNĐ)',
+                data: <?= $salesJSON ?>,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderWidth: 2,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true
+                }
             }
         }
-    }
-});
-</script>
+    });
+    </script>
+</body>
 
 </html>
