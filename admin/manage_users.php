@@ -26,13 +26,14 @@ $result = $stmt->get_result();
     <title>Quản Lý Người Dùng</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="main.css">
+
 </head>
 
 <body>
 
     <div class="admin-container d-flex">
-        <?php include 'sidebar.php'; ?>
-
+        <?php include '../includes/sidebar.php'; ?>
         <main class="content p-4">
             <h2 class="fw-bold">👥 Quản Lý Người Dùng</h2>
             <p class="text-muted">Xem danh sách user và quản lý tài khoản.</p>

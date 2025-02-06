@@ -1,5 +1,6 @@
-<footer class="footer mt-5 py-4 bg-dark text-white text-center">
-    <div class="container">
+<link rel="stylesheet" type="text/css" href="./assets/core.css">
+<footer class="footer">
+    <div class="container text-center">
         <p class="mb-1">&copy; 2025 RVMedia68. All Rights Reserved.</p>
         <p class="small">
             <a href="about.php" class="text-white text-decoration-none">Về Chúng Tôi</a> |

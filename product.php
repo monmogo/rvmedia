@@ -17,6 +17,10 @@ if ($result->num_rows === 0) {
 }
 
 $theme = $result->fetch_assoc();
+
+// 🌟 Tăng lượt xem khi truy cập
+$conn->query("UPDATE themes SET views = views + 1 WHERE id = $theme_id");
+
 ?>
 
 <!DOCTYPE html>
@@ -28,6 +32,92 @@ $theme = $result->fetch_assoc();
     <title><?php echo htmlspecialchars($theme['name']); ?> | Chi Tiết Theme</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="assets/core.css">
+
+    <style>
+    /* 🌟 Thiết kế hiện đại */
+    body {
+        background-color: #f8f9fa;
+        color: #333;
+    }
+
+    .theme-container {
+        max-width: 1100px;
+        margin: auto;
+        padding: 40px 20px;
+    }
+
+    .theme-image {
+        border-radius: 12px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .theme-image:hover {
+        transform: scale(1.05);
+    }
+
+    .theme-details h1 {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #222;
+    }
+
+    .theme-price {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #d9534f;
+    }
+
+    .theme-badges {
+        display: flex;
+        gap: 12px;
+        margin: 15px 0;
+    }
+
+    .theme-badges span {
+        font-size: 0.95rem;
+        padding: 8px 14px;
+        border-radius: 20px;
+        background-color: #e9ecef;
+        color: #555;
+        font-weight: 600;
+    }
+
+    .btn-custom {
+        font-size: 1.1rem;
+        padding: 12px 20px;
+        border-radius: 8px;
+    }
+
+    .btn-demo {
+        border: 2px solid #007bff;
+        color: #007bff;
+        transition: all 0.3s;
+    }
+
+    .btn-demo:hover {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-buy {
+        background-color: #28a745;
+        color: white;
+        transition: all 0.3s;
+    }
+
+    .btn-buy:hover {
+        background-color: #218838;
+    }
+
+    .theme-description {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+        line-height: 1.8;
+    }
+    </style>
 </head>
 
 <body>
@@ -35,10 +125,10 @@ $theme = $result->fetch_assoc();
     <!-- Thanh điều hướng -->
     <?php include 'template/header.php'; ?>
 
-    <div class="container mt-5">
-        <div class="row">
+    <div class="theme-container">
+        <div class="row align-items-center">
             <!-- Ảnh Theme -->
-            <div class="col-md-6">
+            <div class="col-md-6 text-center">
                 <?php
                 $imagePath = trim($theme['image_url']);
                 if (empty($imagePath)) {
@@ -47,19 +137,29 @@ $theme = $result->fetch_assoc();
                     $imagePath = "/rvmedia2/uploads/" . $imagePath;
                 }
                 ?>
-                <img src="<?php echo htmlspecialchars($imagePath); ?>" class="img-fluid rounded shadow-lg"
+                <img src="<?php echo htmlspecialchars($imagePath); ?>" class="img-fluid theme-image"
                     alt="<?php echo htmlspecialchars($theme['name']); ?>">
             </div>
 
             <!-- Thông Tin Theme -->
-            <div class="col-md-6">
-                <h1 class="fw-bold"><?php echo htmlspecialchars($theme['name']); ?></h1>
-                <p class="fw-bold text-danger fs-4">💰 <?php echo number_format($theme['price'], 2); ?> USDT</p>
+            <div class="col-md-6 theme-details">
+                <h1><?php echo htmlspecialchars($theme['name']); ?></h1>
 
-                <div class="d-flex gap-2">
+                <!-- 🌟 Giá Theme -->
+                <p class="theme-price"><?php echo number_format($theme['price'], 2); ?> VND</p>
+
+                <!-- 🌟 Hiển thị lượt xem & lượt mua -->
+                <div class="theme-badges">
+                    <span>👀 <?php echo number_format($theme['views']); ?> lượt xem</span>
+                    <span>🛍 <?php echo number_format($theme['purchases']); ?> lượt mua</span>
+                </div>
+
+                <!-- 🌟 Nút chức năng -->
+                <div class="d-flex gap-3">
                     <a href="<?php echo htmlspecialchars($theme['file_url']); ?>" target="_blank"
-                        class="btn btn-outline-primary btn-lg">📥 Xem demo</a>
-                    <a href="cart.php?id=<?php echo $theme['id']; ?>" class="btn btn-success btn-lg">🛒 Thêm vào giỏ</a>
+                        class="btn btn-lg btn-custom btn-demo">Xem demo</a>
+                    <a href="cart.php?id=<?php echo $theme['id']; ?>" class="btn btn-lg btn-custom btn-buy">Thêm vào
+                        giỏ</a>
                 </div>
 
                 <hr>
@@ -71,11 +171,9 @@ $theme = $result->fetch_assoc();
         </div>
 
         <!-- Mô Tả Theme -->
-        <div class="mt-5">
+        <div class="mt-5 theme-description">
             <h3 class="fw-bold">📖 Mô Tả Chi Tiết</h3>
-            <div class="bg-white p-4 rounded shadow-sm">
-                <p><?php echo nl2br(htmlspecialchars($theme['description'])); ?></p>
-            </div>
+            <p><?php echo nl2br(htmlspecialchars($theme['description'])); ?></p>
         </div>
     </div>
 

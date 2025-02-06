@@ -1,0 +1,94 @@
+/* 🌟 HEADER */
+.navbar {
+    border-bottom: 2px solid #e9ecef;
+}
+
+/* 🌟 LOGO */
+.navbar-brand img {
+    height    : 45px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.navbar-brand img:hover {
+    transform: scale(1.05);
+}
+
+/* 🌟 TÌM KIẾM */
+.search-box {
+    flex     : 1;
+    max-width: 400px;
+}
+
+.search-box .form-control {
+    border-radius: 8px 0 0 8px;
+    border       : 1px solid #ddd;
+}
+
+.search-box .btn {
+    border-radius: 0 8px 8px 0;
+}
+
+/* 🌟 USER MENU */
+.user-menu {
+    gap: 10px;
+}
+
+.user-menu .btn {
+    font-size    : 0.95rem;
+    font-weight  : 500;
+    padding      : 8px 12px;
+    border-radius: 8px;
+    transition   : all 0.2s ease-in-out;
+}
+
+/* 🛒 Nút Giỏ hàng & Hồ sơ */
+.user-menu .btn-outline-dark {
+    border-color: #444;
+    color       : #444;
+}
+
+.user-menu .btn-outline-dark:hover {
+    background: #444;
+    color     : white;
+}
+
+/* 💳 Nút Nạp tiền */
+.user-menu .btn-warning {
+    background  : #fbc02d;
+    color       : white;
+    border-color: #fbc02d;
+}
+
+.user-menu .btn-warning:hover {
+    background: #f9a825;
+    color     : white;
+}
+
+/* 🚪 Nút Đăng xuất */
+.user-menu .btn-danger {
+    background  : #d32f2f;
+    color       : white;
+    border-color: #d32f2f;
+}
+
+.user-menu .btn-danger:hover {
+    background: #b71c1c;
+}
+
+/* 🌟 RESPONSIVE CHO MOBILE */
+@media (max-width: 992px) {
+    .search-box {
+        display: none;
+    }
+
+    .user-menu {
+        flex-direction: column;
+        align-items   : center;
+        gap           : 8px;
+    }
+
+    .user-menu .btn {
+        width     : 100%;
+        text-align: center;
+    }
+}

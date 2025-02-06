@@ -1,3 +1,29 @@
+/* =========================
+   CSS VARIABLES & GLOBAL SETUP
+   ========================= */
+:root {
+    /* Màu sắc */
+    --primary-color  : #007bff;
+    --secondary-color: #f5f7fa;
+    --text-color     : #333;
+    --white          : #fff;
+    --footer-bg      : #222;
+    --footer-text    : #fff;
+    --hover-link     : #bbb;
+
+    /* Font & kích thước */
+    --font-family        : 'Poppins', sans-serif;
+    --container-max-width: 2000px;
+    --transition-duration: 0.3s;
+
+    /* Shadow & border-radius */
+    --card-shadow          : 0px 3px 10px rgba(0, 0, 0, 0.08);
+    --card-hover-shadow    : 0px 5px 15px rgba(0, 0, 0, 0.15);
+    --card-border-radius   : 10px;
+    --sidebar-border-radius: 8px;
+    --banner-border-radius : 12px;
+}
+
 /* 🌟 RESET & CẤU HÌNH CHUNG */
 * {
     margin    : 0;
@@ -5,57 +31,62 @@
     box-sizing: border-box;
 }
 
+html,
 body {
-    background-color: #f9fafb;
-    font-family     : 'Arial', sans-serif;
-    color           : #333;
-    overflow-x      : hidden;
+    width      : 100%;
+    height     : 100%;
+    background : var(--secondary-color);
+    font-family: var(--font-family);
+    color      : var(--text-color);
+    overflow-x : hidden;
 }
 
-/* 🌟 BỐ CỤC CHÍNH */
+/* =========================
+     CONTAINER CHUNG
+     ========================= */
+.container,
 .container-fluid {
-    max-width: 1600px;
-    margin   : auto;
+    width    : 100%;
+    max-width: var(--container-max-width);
+    margin   : 0 auto;
+    padding  : 20px;
 }
 
-.main-container {
-    display   : flex;
-    flex-wrap : wrap;
-    min-height: 100vh;
-}
-
-/* 🌟 BANNER CAROUSEL */
+/* =========================
+     BANNER CAROUSEL & CAPTION
+     ========================= */
 #bannerCarousel {
     max-width    : 100%;
-    border-radius: 10px;
+    border-radius: var(--banner-border-radius);
     overflow     : hidden;
+    margin-bottom: 30px;
 }
 
 .banner-img {
-    height       : 500px;
+    height       : 450px;
     object-fit   : cover;
-    border-radius: 10px;
+    border-radius: var(--banner-border-radius);
 }
 
-/* 🌟 CAPTION BANNER */
 .carousel-caption {
     background   : rgba(0, 0, 0, 0.6);
-    padding      : 15px;
+    padding      : 20px;
     border-radius: 10px;
-    bottom       : 10%;
-    color        : white;
+    bottom       : 15%;
+    color        : var(--white);
+    animation    : fadeIn 1s ease-in-out;
 }
 
 .carousel-caption h1 {
-    font-size  : 2.2rem;
+    font-size  : 2.8rem;
     font-weight: bold;
 }
 
 .carousel-caption p {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
 }
 
-/* 🌟 NÚT ĐIỀU HƯỚNG CAROUSEL */
+/* NÚT ĐIỀU HƯỚNG CAROUSEL */
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
     background-color: rgba(0, 0, 0, 0.5);
@@ -63,19 +94,21 @@ body {
     padding         : 8px;
 }
 
-/* 🌟 RESPONSIVE CHO BANNER */
+/* =========================
+     RESPONSIVE CHO BANNER
+     ========================= */
 @media (max-width: 768px) {
     .banner-img {
-        height: 320px;
+        height: 300px;
     }
 
     .carousel-caption {
-        bottom : 8%;
+        bottom : 12%;
         padding: 10px;
     }
 
     .carousel-caption h1 {
-        font-size: 1.8rem;
+        font-size: 2.2rem;
     }
 
     .carousel-caption p {
@@ -85,7 +118,7 @@ body {
 
 @media (max-width: 576px) {
     .banner-img {
-        height: 260px;
+        height: 250px;
     }
 
     .carousel-caption {
@@ -93,7 +126,7 @@ body {
     }
 
     .carousel-caption h1 {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
     }
 
     .carousel-caption p {
@@ -101,17 +134,20 @@ body {
     }
 }
 
-/* 🌟 SIDEBAR (DANH MỤC) */
+/* =========================
+     SIDEBAR & MOBILE SIDEBAR
+     ========================= */
 .sidebar {
-    background   : #fff;
+    background   : var(--white);
     padding      : 20px;
-    border-radius: 6px;
-    box-shadow   : 0px 2px 8px rgba(0, 0, 0, 0.1);
-    max-width    : 280px;
+    border-radius: var(--sidebar-border-radius);
+    box-shadow   : 0px 3px 10px rgba(0, 0, 0, 0.1);
+    max-width    : 300px;
     flex         : 1;
+    margin-right : 20px;
 }
 
-/* 🌟 SIDEBAR CHO MOBILE */
+/* Chế độ mobile cho Sidebar */
 @media (max-width: 992px) {
     .sidebar {
         display   : none;
@@ -120,133 +156,181 @@ body {
         left      : 0;
         width     : 260px;
         height    : 100%;
-        background: #fff;
+        background: var(--white);
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
         z-index   : 1000;
         padding   : 20px;
         transition: transform 0.3s ease-in-out;
+        transform : translateX(-100%);
     }
 
-    .sidebar-open {
+    /* Khi sidebar được mở */
+    .sidebar.sidebar-open {
         display  : block;
         transform: translateX(0);
     }
 
+    /* Nút chuyển đổi sidebar */
     .sidebar-toggle {
         display      : block;
         position     : fixed;
         top          : 15px;
         left         : 15px;
-        background   : #007bff;
-        color        : white;
-        padding      : 8px 12px;
-        border-radius: 5px;
+        background   : var(--primary-color);
+        color        : var(--white);
+        padding      : 10px 14px;
+        border-radius: 6px;
         cursor       : pointer;
         z-index      : 1100;
         font-size    : 14px;
     }
 }
 
-/* 🌟 DANH MỤC */
+/* =========================
+     DANH MỤC
+     ========================= */
 .list-group-item {
     cursor       : pointer;
-    transition   : background 0.3s, color 0.3s;
-    font-size    : 0.95rem;
-    padding      : 10px;
-    border-radius: 5px;
+    transition   : background var(--transition-duration), color var(--transition-duration);
+    font-size    : 1rem;
+    padding      : 14px;
+    border-radius: 6px;
 }
 
 .list-group-item:hover,
 .list-group-item.active {
-    background: #007bff;
-    color     : white;
+    background: var(--primary-color);
+    color     : var(--white);
 }
 
-/* 🌟 DANH SÁCH THEME */
-.theme-list {
-    background   : #fff;
-    padding      : 20px;
-    border-radius: 6px;
-    box-shadow   : 0px 2px 8px rgba(0, 0, 0, 0.1);
-    flex-grow    : 3;
+/* =========================
+     GRID & THEME CARD
+     ========================= */
+#theme-list {
+    display        : flex;
+    flex-wrap      : wrap;
+    justify-content: space-between;
+    gap            : 20px;
 }
 
-/* 🌟 CHIA CỘT LAYOUT */
-@media (min-width: 992px) {
-    .main-container {
-        display  : flex;
-        flex-wrap: nowrap;
-    }
-
-    .sidebar {
-        flex     : 1;
-        max-width: 300px;
-    }
-
-    .theme-list {
-        flex: 3;
-    }
-}
-
-/* 🌟 THEME CARD */
 .theme-card {
-    transition      : transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    border-radius   : 8px;
-    box-shadow      : 0px 2px 8px rgba(0, 0, 0, 0.08);
+    flex            : 1 1 calc(33.333% - 20px);
+    max-width       : calc(33.333% - 20px);
+    display         : flex;
+    flex-direction  : column;
+    border-radius   : var(--card-border-radius);
+    box-shadow      : var(--card-shadow);
+    background-color: var(--white);
     overflow        : hidden;
-    background-color: #fff;
-    height          : 100%;
-    padding         : 15px;
-}
-
-.theme-card img {
-    height       : 300px;
-    object-fit   : cover;
-    border-radius: 8px 8px 0 0;
+    transition      : transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .theme-card:hover {
-    transform : translateY(-5px);
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+    transform : translateY(-6px);
+    box-shadow: var(--card-hover-shadow);
 }
 
-/* 🌟 NÚT BẤM (LÀM NHỎ HƠN) */
-.btn {
-    font-size    : 0.85rem;
-    padding      : 8px 12px;
-    min-width    : 90px;
-    transition   : all 0.2s ease-in-out;
+.theme-card img {
+    width        : 100%;
+    height       : 250px;
+    object-fit   : cover;
+    border-radius: var(--card-border-radius) var(--card-border-radius) 0 0;
+}
+
+/* Chiều cao đồng nhất cho nội dung card */
+.theme-card .card-body {
+    flex           : 1;
+    display        : flex;
+    flex-direction : column;
+    justify-content: space-between;
+    padding        : 18px;
+}
+
+.theme-card .card-title {
+    font-size    : 1.2rem;
+    font-weight  : bold;
+    text-align   : center;
+    margin-bottom: 10px;
+}
+
+.theme-card .card-text {
+    font-size : 0.95rem;
+    color     : #666;
+    text-align: center;
+    flex-grow : 1;
+}
+
+/* Nút bấm trong card */
+.theme-card .d-flex {
+    margin-top: auto;
+}
+
+.theme-card .btn {
+    width        : 48%;
+    font-size    : 0.9rem;
     border-radius: 6px;
 }
 
-.btn-primary:hover,
-.btn-success:hover {
-    transform : translateY(-3px);
-    background: #0056b3;
+/* Responsive cho theme card */
+@media (max-width: 992px) {
+    .theme-card {
+        flex     : 1 1 calc(50% - 20px);
+        max-width: calc(50% - 20px);
+    }
 }
 
-/* 🌟 FOOTER */
+@media (max-width: 768px) {
+    .theme-card {
+        flex     : 1 1 100%;
+        max-width: 100%;
+    }
+
+    .theme-card img {
+        height: 200px;
+    }
+}
+
+/* =========================
+     FOOTER
+     ========================= */
 .footer {
-    background: #222;
-    color     : #ccc;
-    font-size : 0.9rem;
-    padding   : 20px 0;
+    background: var(--footer-bg);
+    color     : var(--footer-text);
     text-align: center;
+    padding   : 16px 0;
+    font-size : 0.9rem;
+    margin-top: auto;
+    width     : 100%;
 }
 
 .footer a {
-    color     : #bbb;
-    transition: color 0.3s;
+    color     : var(--hover-link);
+    transition: color var(--transition-duration) ease-in-out;
 }
 
 .footer a:hover {
-    color          : #007bff;
+    color          : var(--primary-color);
     text-decoration: none;
 }
 
-/* 🌟 TỐI ƯU CHO MOBILE */
+/* Tối ưu cho mobile */
 @media (max-width: 992px) {
     .search-box {
         max-width: 100%;
+    }
+}
+
+/* =========================
+     HIỆU ỨNG ANIMATION
+     ========================= */
+@keyframes fadeIn {
+    0% {
+        opacity  : 0;
+        transform: translateY(12px);
+    }
+
+    100% {
+        opacity  : 1;
+        transform: translateY(0);
     }
 }
